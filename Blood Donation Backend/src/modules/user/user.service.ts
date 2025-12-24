@@ -1,6 +1,5 @@
 import { id } from "zod/locales";
 import prisma from "../../config/prisma.js";
-import { District, Division } from "../../generated/prisma/enums.js";
 
 const getAllUsers = async () => {
     const result = await prisma.user.findMany({
@@ -29,7 +28,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id: string) => {
     const result = await prisma.user.findUnique({
-		where: { id },
+        where: { id },
         select: {
             id: true,
             name: true,
@@ -69,16 +68,26 @@ const deleteUserById = async (id: string) => {
     return "User deleted successfully!";
 };
 
-const updateUserById = async(id: string, data: any) => {
-	console.log(id);
-	console.log(data)
-	console.log(Division)
-	console.log(District)
+const updateUserById = async (id: string, data: any) => {
+    const user = await prisma.user.findUnique({
+        where: { id },
+    });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const result = await prisma.user.update({
+        where: { id },
+        data: data,
+    });
+
+    return `user updated successfully!`;
 };
 
 export const userService = {
     getAllUsers,
-	getUserById,
+    getUserById,
     deleteUserById,
-	updateUserById
+    updateUserById,
 };
