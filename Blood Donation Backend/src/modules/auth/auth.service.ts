@@ -12,7 +12,6 @@ const register = async (payload: any) => {
     return prisma.user.create({
         data: {
             ...payload,
-            password: hashed,
         },
         select: {
             id: true,

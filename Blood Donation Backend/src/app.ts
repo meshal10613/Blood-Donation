@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { authRoutes } from "./modules/auth/auth.route.js";
+import { userRoutes } from "./modules/user/user.route.js";
 
 const app = express();
 
@@ -12,7 +13,9 @@ app.get("/", (req: Request, res: Response) => {
 	res.send("Blood Donation Backend is running....");
 });
 
+//? Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);
 
 app.use(globalErrorHandler);
 

@@ -1,13 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const globalErrorHandler = (
-    err: any,
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    res.status(500).json({
+    res.status(404).json({
         success: false,
-        message: err.message || "Internal Server Error",
+        message: "Not Found!",
     });
 };
