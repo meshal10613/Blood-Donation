@@ -54,8 +54,26 @@ const deleteUserById = async (req: Request, res: Response) => {
     }
 };
 
+const updateUserById = async (req: Request, res: Response) => {
+	try {
+		const { id } = userValidation.userIdSchema.parse(req.params);
+		const result = await userService.updateUserById(id as string, req.body);
+		res.status(200).json({
+			success: true,
+			message: result,
+		})
+	} catch (error: any) {
+		res.status(500).json({
+			success: false,
+			message: error.message,
+			error: error,
+		});
+	}
+};
+
 export const userController = {
     getAllUsers,
 	getUserById,
     deleteUserById,
+	updateUserById
 };

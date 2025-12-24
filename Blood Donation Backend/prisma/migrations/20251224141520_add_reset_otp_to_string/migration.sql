@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "resetOtp" SET DATA TYPE TEXT;

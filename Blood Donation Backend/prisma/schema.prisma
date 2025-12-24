@@ -133,17 +133,17 @@ model User {
   photoURL            String?
   role                Role        @default(USER)
   mobileNumber        String?     @unique @db.VarChar(20)
-  division            Division?   // optional division
-  district            District?   // optional district (formerly zilla)
-  zipCode             String?     @db.VarChar(10)
-  address             String?     // optional full address
+  whatsapp            Boolean? // optional
+  imo                 Boolean? // optional
+  gender              Gender? // optional enum
   bloodGroup          BloodGroup?
   lastBloodDonateDate DateTime?
-  resetOtp            Int?
+  address             String? // optional full address
+  district            District? // optional district (formerly zilla)
+  division            Division? // optional division
+  zipCode             String?     @db.VarChar(10)
+  resetOtp            String?
   resetOtpExpires     DateTime?
-  gender              Gender?     // optional enum
-  whatsapp            Boolean?    // optional
-  imo                 Boolean?    // optional
   createdAt           DateTime    @default(now())
   lastSignInAt        DateTime?
 

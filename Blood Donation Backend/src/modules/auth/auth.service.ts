@@ -63,7 +63,7 @@ const sendResetOtp = async (email: string) => {
     await prisma.user.update({
         where: { email },
         data: {
-            resetOtp: otp,
+            resetOtp: otp.toString(),
             resetOtpExpires: new Date(Date.now() + 5 * 60 * 1000), // 5 min
         },
     });
