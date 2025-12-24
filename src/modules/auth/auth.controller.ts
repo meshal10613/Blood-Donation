@@ -35,9 +35,17 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 const sendOtp = async (req: Request, res: Response) => {
-    const { email } = authValidation.resetOtpSchema.parse(req.body);
-    await authService.sendResetOtp(email);
-    res.json({ success: true, message: "OTP sent" });
+    try {
+        const { email } = authValidation.resetOtpSchema.parse(req.body);
+        await authService.sendResetOtp(email);
+        res.json({ success: true, message: "OTP sent" });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+            error: error,
+        });
+    }
 };
 
 const resetPassword = async (req: Request, res: Response) => {

@@ -8,6 +8,8 @@ const config = {
     node_env: process.env.NODE_ENV,
     database_url: process.env.DATABASE_URL,
     jwt_secret: process.env.JWT_SECRET,
+    nodemailer_email: process.env.NODEMAILER_EMAIL,
+    nodemailer_email_password: process.env.NODEMAILER_EMAIL_PASS,
 };
 
 export default config;

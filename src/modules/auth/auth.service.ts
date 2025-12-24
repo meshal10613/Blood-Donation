@@ -3,6 +3,7 @@ import { hashPassword, comparePassword } from "../../utils/hash.js";
 import { generateOtp } from "../../utils/otp.js";
 import prisma from "../../config/prisma.js";
 import config from "../../config/index.js";
+import nodemailer from "nodemailer";
 
 const register = async (payload: any) => {
     const hashed = await hashPassword(payload.password);
@@ -51,6 +52,13 @@ const login = async (payload: any) => {
 };
 
 const sendResetOtp = async (email: string) => {
+    const user = await prisma.user.findUnique({
+        where: { email },
+    });
+    if (!user) {
+        return "No account found with this email";
+    }
+
     const otp = generateOtp();
 
     await prisma.user.update({
@@ -61,8 +69,41 @@ const sendResetOtp = async (email: string) => {
         },
     });
 
-    // 🔔 send via email / SMS here
-    console.log("OTP:", otp);
+    // 🔔 send email via nodemailer
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: config.nodemailer_email,
+            pass: config.nodemailer_email_password,
+        },
+    });
+
+    const htmlContent = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.5; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+            <h2 style="color: #333; text-align: center;">Your One-Time Password</h2>
+            <p style="">Dear ${user.name},</p>
+            <p>Here is your One-Time Password to securely log in to your FoodWagon account:</p>
+            <p style="font-size: 24px; font-weight: bold; color: #0d6efd; text-align: center;">${otp}</p>
+            <p style="color: #555;">Note: This OTP is valid for 5 minutes.</p>
+            <p>If you did not request this OTP, please disregard this email or contact our support team.</p>
+            <p style="margin-top: 20px;">Team Blood Donation.</p>
+        </div>
+    `;
+
+    await transporter.sendMail(
+        {
+            from: config.nodemailer_email,
+            to: email,
+            subject: "OTP for Blood Donation Login",
+            html: htmlContent,
+        },
+        (err, info) => {
+            if (err) {
+                console.error(err);
+                return "Failed to send OTP email";
+            }
+        }
+    );
 
     return true;
 };
