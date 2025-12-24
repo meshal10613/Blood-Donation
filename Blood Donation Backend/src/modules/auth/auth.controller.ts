@@ -49,9 +49,17 @@ const sendOtp = async (req: Request, res: Response) => {
 };
 
 const resetPassword = async (req: Request, res: Response) => {
-    const data = authValidation.resetPasswordSchema.parse(req.body);
-    await authService.resetPassword(data);
-    res.json({ success: true, message: "Password reset successful" });
+    try {
+        const data = authValidation.resetPasswordSchema.parse(req.body);
+        await authService.resetPassword(data);
+        res.json({ success: true, message: "Password reset successful" });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+            error: error,
+        });
+    }
 };
 
 export const authController = {

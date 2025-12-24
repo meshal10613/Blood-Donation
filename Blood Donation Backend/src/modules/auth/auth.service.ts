@@ -79,14 +79,14 @@ const sendResetOtp = async (email: string) => {
     });
 
     const htmlContent = `
-        <div style="font-family: Arial, sans-serif; line-height: 1.5; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
-            <h2 style="color: #333; text-align: center;">Your One-Time Password</h2>
-            <p style="">Dear ${user.name},</p>
-            <p>Here is your One-Time Password to securely log in to your FoodWagon account:</p>
-            <p style="font-size: 24px; font-weight: bold; color: #0d6efd; text-align: center;">${otp}</p>
-            <p style="color: #555;">Note: This OTP is valid for 5 minutes.</p>
+        <div style="font-family: Arial, sans-serif; line-height: 1.5; max-width: 600px; margin: auto; padding: 20px; border-radius: 8px; background-color: #790001; color: #D5B260;">
+            <h2 style="text-align: center;">Your One-Time Password</h2>
+            <p>Dear ${user.name},</p>
+            <p>Here is your One-Time Password to securely log in to your Life Drop account:</p>
+            <p style="font-size: 50px; font-weight: bold; text-align: center;">${otp}</p>
+            <p>Note: This OTP is valid for 5 minutes.</p>
             <p>If you did not request this OTP, please disregard this email or contact our support team.</p>
-            <p style="margin-top: 20px;">Team Blood Donation.</p>
+            <p style="margin-top: 20px;">Team LifeDrop.</p>
         </div>
     `;
 
