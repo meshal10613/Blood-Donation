@@ -129,7 +129,7 @@ model User {
   id                  String      @id @default(uuid())
   name                String      @db.VarChar(50)
   email               String      @unique @db.VarChar(100)
-  password            String
+  password            String      @db.Text
   photoURL            String?
   role                Role        @default(USER)
   mobileNumber        String?     @unique @db.VarChar(20)

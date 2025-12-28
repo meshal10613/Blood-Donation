@@ -101,12 +101,3 @@ export const DistrictEnum = {
 
     Mymensingh: ["Jamalpur", "Mymensingh", "Netrokona", "Sherpur"],
 } as const;
-
-
-export type Division = keyof typeof DistrictEnum;
-
-// Type of all district values
-export type District = typeof DistrictEnum[Division][number];
-
-// export const allDistricts = Object.values(DistrictEnum).flat() as string[];
-export const allDistricts = Object.values(DistrictEnum).flat() as [string, ...string[]];

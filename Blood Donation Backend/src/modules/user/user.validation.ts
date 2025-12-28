@@ -1,6 +1,5 @@
 import z from "zod";
 import {
-    allDistricts,
     BloodGroupEnum,
     DistrictEnum,
     DivisionEnum,
@@ -19,6 +18,13 @@ const userSchema = z
             .min(2, { message: "Name must be at least 2 characters long" })
             .max(50, { message: "Name cannot exceed 50 characters" })
             .optional(),
+        email: z
+            .string({ message: "Email must be a string" })
+            .email({ message: "Email must be a valid email address" })
+            .max(100, { message: "Email cannot exceed 100 characters" }),
+        password: z
+            .string({ message: "Password must be a string" })
+            .min(6, { message: "Password must be at least 6 characters long" }),
         photoURL: z
             .string({ message: "Photo URL must be a string" })
             .optional(),
@@ -49,17 +55,16 @@ const userSchema = z
             .optional(),
     })
     .superRefine((data, ctx) => {
-        if (data.division && data.district) {
-            const district =
-                data.district as (typeof DistrictEnum)[typeof data.division][number];
+        if (!data.division || !data.district) return;
 
-            if (!DistrictEnum[data.division].includes(district)) {
-                ctx.addIssue({
-                    path: ["district"],
-                    message: "District does not match the selected division",
-                    code: z.ZodIssueCode.custom,
-                });
-            }
+        const districts = DistrictEnum[data.division] as readonly string[];
+
+        if (!districts.includes(data.district)) {
+            ctx.addIssue({
+                path: ["district"],
+                message: "District does not match the selected division",
+                code: z.ZodIssueCode.custom,
+            });
         }
     });
 
